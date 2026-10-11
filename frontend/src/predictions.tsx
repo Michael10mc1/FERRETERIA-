@@ -3,6 +3,7 @@ import {Activity, ArrowRight, BarChart3, CalendarDays, Check, ChevronRight, Down
 import {api, send, money} from './api';
 import {ErrorBox, Loading, Modal} from './components';
 import './predictions.css';
+import {RealValidation} from './ml-validation';
 
 type Mode = 'tienda'|'ejemplo';
 type Item = {sku:string;name:string;category:string;image:string;unit:string;stock:number;min_stock:number;prediction:number|null;remaining_prediction:number|null;committed_today:number;suggested:number|null;target_stock:number|null;purchase_cents:number|null;action:string;reason:string|null;history_days:number;limited_days:number;previous_7:number|null;history:{date:string;units:number}[]};
@@ -28,7 +29,8 @@ export function Predictions(){
     <div className="ml-heading"><div><span className="eyebrow orange">HORIZONTE / INTELIGENCIA DE INVENTARIO</span><h1>Anticipa tu próxima semana.</h1><p>Previsiones de venta que te ayudan a planificar tus existencias.</p></div><span className="ml-model-pill"><Activity size={15}/> Modelo ML · 7 días</span></div>
     <div className="ml-tabs"><button className={tab==='prevision'?'active':''} onClick={()=>setTab('prevision')}><BarChart3 size={17}/>Previsión de ventas</button><button className={tab==='modelo'?'active':''} onClick={()=>setTab('modelo')}><Sparkles size={17}/>Cómo funciona el modelo</button></div>
     <ErrorBox message={error}/>
-    {busy?<Loading/>:tab==='modelo'&&model?<ModelInfo model={model}/>:data&&<>
+    <button className={'ml-real-tab '+(tab==='real'?'active':'')} onClick={()=>setTab('real')}><Check size={16}/> Historial y validación real</button>
+    {tab==='real'?<RealValidation key={version} onImport={()=>setImporting(true)}/>:busy?<Loading/>:tab==='modelo'&&model?<ModelInfo model={model}/>:data&&<>
       <section className="ml-control"><div className="ml-segment" aria-label="Origen del historial"><button className={mode==='tienda'?'active':''} onClick={()=>{setMode('tienda');setPage(1)}}>Mi tienda</button><button className={mode==='ejemplo'?'active':''} onClick={()=>{setMode('ejemplo');setPage(1)}}>Explorar el modelo</button></div><span><CalendarDays size={16}/>{day(data.forecast_start)} — {day(data.forecast_end)}</span><button className="icon-button" onClick={()=>setVersion(x=>x+1)} aria-label="Actualizar predicciones"><RefreshCw size={17}/></button></section>
       <div className={'ml-context '+(mode==='ejemplo'?'sample':'')}><Info size={18}/><div><b>{mode==='ejemplo'?'Ejemplo con historial y existencias sintéticos':'Previsión experimental con el historial de tu tienda'}</b><p>{mode==='ejemplo'?'Explora 320 productos con datos del cuaderno. Este escenario conserva sus fechas y no modifica tus ventas ni tu inventario.':'El modelo fue entrenado con datos sintéticos. Las previsiones necesitan validación con ventas reales antes de usarlas para compras.'}</p></div>{mode==='tienda'&&<button onClick={()=>setImporting(true)}><Upload size={15}/>Añadir historial</button>}</div>
       <section className="ml-kpis">

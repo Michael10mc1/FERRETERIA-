@@ -63,16 +63,16 @@ def features(product, history, cutoff):
         cutoff.weekday(), cutoff.month, np.sin(2*np.pi*cutoff.timetuple().tm_yday/365.25),
         np.cos(2*np.pi*cutoff.timetuple().tm_yday/365.25)]))
 
-def real_history(db, cutoff):
+def real_history(db, cutoff, product_ids=None):
     start = cutoff-timedelta(days=27)
     days = [start+timedelta(days=n) for n in range(28)]
-    products = list(db.scalars(select(Product).where(Product.active == True)))
+    products = list(db.scalars(select(Product).where(Product.active == True if product_ids is None else Product.id.in_(product_ids))))
     movements = {}
     for m in db.scalars(select(Movement).order_by(Movement.created_at, Movement.id)):
         movements.setdefault(m.product_id, []).append(m)
     imported = {(x.product_id,x.day):x for x in db.scalars(select(DailySale).where(
         DailySale.day >= start.isoformat(), DailySale.day <= cutoff.isoformat()))}
-    sold, committed_today = {}, {}
+    sold, committed_today, pending = {}, {}, set()
     for item, order in db.execute(select(OrderItem,Order).join(Order,OrderItem.order_id == Order.id).where(Order.status != 'cancelado')):
         d = local_date(order.created_at)
         if d == cutoff+timedelta(days=1):
@@ -80,6 +80,8 @@ def real_history(db, cutoff):
         if order.status == 'entregado' and start <= d <= cutoff:
             key = (item.product_id,d.isoformat())
             sold[key] = sold.get(key,0)+item.quantity
+        elif start <= d <= cutoff:
+            pending.add((item.product_id,d.isoformat()))
     output = []
     for p in products:
         pm = movements.get(p.id,[])
@@ -88,17 +90,26 @@ def real_history(db, cutoff):
         for day in days:
             imported_day = imported.get((p.id,day.isoformat()))
             if imported_day:
-                h.append({'date':day.isoformat(),'units':imported_day.units})
+                h.append({'date':day.isoformat(),'units':imported_day.units,'available':imported_day.available,'pending':False})
                 limited += int(not imported_day.available)
             elif opening and day > opening:
-                h.append({'date':day.isoformat(),'units':sold.get((p.id,day.isoformat()),0)})
                 before = [m for m in pm if local_date(m.created_at) < day]
                 during = [m for m in pm if local_date(m.created_at) == day]
-                limited += int((bool(before) and before[-1].balance <= 0) or any(m.balance <= 0 for m in during))
+                unavailable = (bool(before) and before[-1].balance <= 0) or any(m.balance <= 0 for m in during)
+                limited += int(unavailable)
+                h.append({'date':day.isoformat(),'units':sold.get((p.id,day.isoformat()),0),
+                    'available':not unavailable,'pending':(p.id,day.isoformat()) in pending})
         output.append({**{k:getattr(p,k) for k in ['id','sku','name','category','brand','price_cents','cost_cents','stock','min_stock','image','unit']},
             'promo':int(p.discount_percent > 0), 'history':h, 'limited_days':limited,
-            'committed_today':committed_today.get(p.id,0)})
+            'committed_today':committed_today.get(p.id,0), 'opening':opening.isoformat() if opening else None,
+            'pending_days':sum(x.get('pending',False) for x in h)})
     return output
+
+def unavailable_reason(p):
+    return ('Historial insuficiente' if len(p['history']) < 28 else
+            'Pedidos históricos sin resolver' if p.get('pending_days',0) else
+            'Ventas limitadas por disponibilidad' if p.get('limited_days',0) else
+            'Sin ventas en los últimos 28 días' if sum(h['units'] for h in p['history']) == 0 else None)
 
 def forecast(db, mode='tienda'):
     if mode not in ('tienda','ejemplo'):
@@ -113,9 +124,7 @@ def forecast(db, mode='tienda'):
     ready, rows = [], []
     for p in items:
         history = p['history']
-        reason = ('Historial insuficiente' if len(history) < 28 else
-                  'Ventas limitadas por disponibilidad' if p.get('limited_days',0) else
-                  'Sin ventas en los últimos 28 días' if sum(h['units'] for h in history) == 0 else None)
+        reason = unavailable_reason(p)
         item = {k:p[k] for k in ['sku','name','category','stock','min_stock','image','unit']}
         item.update({'history':history, 'history_days':len(history), 'limited_days':p.get('limited_days',0),
             'prediction':None,'remaining_prediction':None,'committed_today':p.get('committed_today',0),

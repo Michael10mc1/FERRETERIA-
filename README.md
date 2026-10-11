@@ -63,3 +63,29 @@ con cero ventas. Reimportar el mismo SKU y fecha reemplaza su registro históric
 no modifica pedidos ni existencias. Solo un administrador puede acceder al ML.
 
 Pruebas aisladas: `.venv\Scripts\python.exe -m pytest backend/test_ml.py backend/test_app.py -q`.
+
+### Historial y validación real
+
+En **Predicciones ML → Historial y validación real** se consulta el número de
+pedidos entregados, pendientes e historiales importados. El diagnóstico CSV indica
+las fechas faltantes por SKU, problemas de disponibilidad y pedidos sin resolver.
+Los pedidos históricos aún abiertos impiden pronosticar ese producto, para evitar
+confundir ventas pendientes de entrega con días de venta cero.
+
+Cuando haya productos aptos, **Guardar semana para evaluar** conserva su previsión,
+historial de entrada, referencia de la semana anterior y versión del modelo en
+la base local. No sobreescribe previsiones ni admite semanas superpuestas por SKU.
+Es una acción manual del administrador, no un proceso automático en segundo plano.
+
+Al terminar los siete días, **Actualizar diagnóstico** compara contra las ventas
+registradas del período: MAE, RMSE y WAPE, junto al error de la referencia. Las
+semanas incompletas, con pedidos sin resolver o falta de stock se excluyen; WAPE
+queda sin definir cuando las ventas totales son cero. Se incluyen productos
+desactivados después de guardar su previsión. Correcciones en los pedidos pueden
+actualizar los resultados observados, pero nunca la previsión guardada.
+
+Este seguimiento no certifica la procedencia de archivos importados, no rellena
+ventas faltantes con datos sintéticos y no reentrena automáticamente. Se requiere
+registrar todas las ventas del negocio para interpretar correctamente los ceros.
+La matriz del cuaderno sigue siendo sintética; el seguimiento real evalúa ventas,
+sin presentar los reabastecimientos como una matriz real de faltantes.

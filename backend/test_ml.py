@@ -16,8 +16,9 @@ def checks():
     with TestClient(app) as client:
         assert client.get('/api/admin/ml/forecast').status_code==401
         assert client.post('/api/auth/register',json={'name':'ML verification','email':'ml-test@example.com','password':'Test-ML-2026!'}).status_code==201
-        for path in ['/forecast','/model','/export']:
+        for path in ['/forecast','/model','/export','/readiness','/readiness/export','/validation']:
             assert client.get('/api/admin/ml'+path).status_code==403
+        assert client.post('/api/admin/ml/validation/snapshots',json={}).status_code==403
         assert client.post('/api/admin/ml/history',json={'csv':'fecha,sku,unidades_vendidas,disponible\n'}).status_code==403
         with SessionLocal() as db:
             user=db.scalar(select(User).where(User.email=='ml-test@example.com'));user.role='admin';db.commit()
@@ -25,6 +26,11 @@ def checks():
         r=client.get('/api/admin/ml/forecast');assert r.status_code==200,r.text
         assert r.json()['summary']['ready']==0 and len(r.json()['items'])==320
         assert all(x['prediction'] is None for x in r.json()['items'])
+        diagnostic=client.get('/api/admin/ml/readiness').json()
+        assert diagnostic['ready']==0 and diagnostic['imported_rows']==0
+        assert diagnostic['delivered_orders']==0 and diagnostic['items'][0]['days']==0
+        assert client.get('/api/admin/ml/validation').json()['model_metrics'] is None
+        assert client.post('/api/admin/ml/validation/snapshots',json={}).status_code==422
         example=client.get('/api/admin/ml/forecast?mode=ejemplo');assert example.status_code==200,example.text
         d=example.json();assert d['summary']['ready']==320
         assert d['forecast_start']=='2026-10-10' and d['forecast_end']=='2026-10-16'
@@ -82,6 +88,10 @@ def checks():
             actual=next(x for x in real_history(db,end) if x['sku']==product.sku)
             assert len(actual['history'])==28 and actual['history'][-1]['units']==3
             assert sum(x['units'] for x in actual['history'])==3
+            item=next(x for x in client.get('/api/admin/ml/forecast').json()['items'] if x['sku']==product.sku)
+            assert item['prediction'] is None and item['reason']=='Pedidos históricos sin resolver'
+            pending=db.scalar(select(Order).where(Order.idempotency_key=='2'))
+            pending.status='cancelado';db.commit()
             # Today's committed stock is subtracted from the same seven-day horizon.
             for i,status in enumerate(['pendiente','cancelado']):
                 order=Order(user_id=user.id,idempotency_key=f'today-{i}',request_hash='test',created_at=today().isoformat()+'T12:00:00-05:00',status=status,delivery='recojo',address={},customer_name='test',phone='999999999',subtotal_cents=100,shipping_cents=0,total_cents=100)
@@ -92,6 +102,43 @@ def checks():
             row=next(x for x in result['items'] if x['sku']==product.sku)
             assert row['committed_today']==2
             assert abs(row['remaining_prediction']-max(0,row['prediction']-2))<0.02
+        # Freeze evidence, do not overwrite it, and evaluate only after seven days.
+        from unittest.mock import patch
+        from .models import ForecastObservation
+        captured=client.post('/api/admin/ml/validation/snapshots',json={})
+        assert captured.status_code==200,captured.text
+        assert captured.json()['saved']==1
+        assert client.post('/api/admin/ml/validation/snapshots',json={}).json()['saved']==0
+        initial=client.get('/api/admin/ml/validation').json()
+        assert initial['waiting']==1 and initial['evaluated']==0 and initial['model_metrics'] is None
+        with SessionLocal() as db:
+            observation=db.scalar(select(ForecastObservation))
+            frozen=observation.prediction
+            product=db.get(Product,observation.product_id)
+            product.active=False
+            db.commit()
+        evaluation_day=today()+timedelta(days=7)
+        with patch('backend.ml_validation.today',return_value=evaluation_day):
+            result=client.get('/api/admin/ml/validation').json()
+            assert result['excluded']==1 and result['evaluated']==0 # today's pending order
+            with SessionLocal() as db:
+                db.scalar(select(Order).where(Order.idempotency_key=='today-0')).status='entregado'
+                db.commit()
+            result=client.get('/api/admin/ml/validation').json()
+            assert result['evaluated']==1 and result['items'][0]['actual']==2
+            assert abs(result['model_metrics']['mae']-abs(frozen-2))<1e-8
+            assert result['baseline_metrics']['mae']==1 # baseline: 3 units last week
+            with SessionLocal() as db:
+                db.scalar(select(Order).where(Order.idempotency_key=='today-0')).status='cancelado'
+                db.commit()
+            result=client.get('/api/admin/ml/validation').json()
+            assert result['model_metrics']['wape'] is None # zero outcomes, never divide by zero
+            assert result['items'][0]['prediction']==frozen
+            with SessionLocal() as db:
+                db.add(Movement(product_id=product.id,kind='ajuste',quantity=-1,balance=0,reason='test',created_at=(evaluation_day-timedelta(days=2)).isoformat()+'T12:00:00-05:00'))
+                db.commit()
+            result=client.get('/api/admin/ml/validation').json()
+            assert result['evaluated']==0 and result['excluded']==1
     print('ML: auth, real/example separation, temporal features, imports, stock and Peru dates verified.')
 
 if __name__=='__main__':

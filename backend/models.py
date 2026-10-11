@@ -111,3 +111,17 @@ class DailySale(Base):
     available: Mapped[bool] = mapped_column(default=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     created_at: Mapped[str] = mapped_column(default=now)
+
+class ForecastObservation(Base):
+    __tablename__ = 'ml_forecast_observations'
+    __table_args__ = (UniqueConstraint('product_id', 'start'),)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey('products.id'), index=True)
+    start: Mapped[str]
+    end: Mapped[str]
+    model_hash: Mapped[str] = mapped_column(index=True)
+    prediction: Mapped[float]
+    baseline: Mapped[float]
+    context: Mapped[dict] = mapped_column(JSON)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    created_at: Mapped[str] = mapped_column(default=now)

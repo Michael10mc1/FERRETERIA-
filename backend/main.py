@@ -270,6 +270,7 @@ def export(kind:str,start:str='',end:str='',db:DBSession=Depends(get_db),user=De
     return Response(stream.getvalue(),media_type='text/csv; charset=utf-8',headers={'Content-Disposition':f'attachment; filename="horizonte-{kind}.csv"'})
 
 from .ml import router as ml_router
+from . import ml_validation
 app.include_router(ml_router)
 
 if (ROOT/'dist').exists():
