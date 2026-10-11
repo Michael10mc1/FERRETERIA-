@@ -1,0 +1,454 @@
+{
+  "notice": "Catálogo demostrativo para Perú. Precios en PEN; no representan precios en vivo ni disponibilidad real. Fotografías de referencia de tipos de producto tomadas de las fuentes listadas; no se garantiza correspondencia exacta de marca o variante. Revisar autorizaciones antes de uso comercial público.",
+  "assets": [
+    {
+      "file": "/images/stanley-claw-hammer.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/hammers/c27",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/28827.jpg",
+      "source_title": "Stanley / Stanley Fibreglass Claw Hammer 20oz",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/combination-pliers.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/pliers-cutters/c670",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/65225.jpg",
+      "source_title": "Minotaur / Minotaur Combination Pliers 160mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/adjustable-wrench.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/spanners/c1134",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/73535.jpg",
+      "source_title": "Minotaur / Minotaur Adjustable Wide Jaw Wrench 8\" OJC 39mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/stanley-screwdriver.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/screwdrivers/c675",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/24616.jpg",
+      "source_title": "Stanley / Stanley Cushion Grip Screwdriver Set",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/bosch-corded-drill.jpg",
+      "source_page": "https://www.toolstation.com/power-tools/drills/c719",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AI937.jpg",
+      "source_title": "Bosch / Bosch Professional 18V GSB 18V-65 Combi Drill 1 x 5.0Ah",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/makita-angle-grinder.jpg",
+      "source_page": "https://www.toolstation.com/power-tools/angle-grinders/c378",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/62974.jpg",
+      "source_title": "Makita / Makita 18V 115mm Cordless Angle Grinder Body Only",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/dewalt-circular-saw.jpg",
+      "source_page": "https://www.toolstation.com/power-tools/saws/c722",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/83392.jpg",
+      "source_title": "DeWalt / DeWalt DCS391N-XJ 18V XR 165mm Cordless Circular Saw Body Only",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/makita-orbital-sander.jpg",
+      "source_page": "https://www.toolstation.com/power-tools/sanders/c863",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/51979.jpg",
+      "source_title": "Makita / Makita 18V Cordless Random Orbital Sander Body Only",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/bosch-hss-drill-bit.jpg",
+      "source_page": "https://www.toolstation.com/power-tool-accessories/drill-bits/c713",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/30018.jpg",
+      "source_title": "Bosch / Bosch PointTeQ HSS Metal Drill Bit Set",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/bosch-masonry-drill-bit.jpg",
+      "source_page": "https://www.toolstation.com/power-tool-accessories/drill-bits/c713",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/78397.jpg",
+      "source_title": "Bosch / Bosch CYL-3 Masonry Drill Bit Set",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/metal-cutting-disc.jpg",
+      "source_page": "https://www.toolstation.com/power-tool-accessories/cutting-blades/c715",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/10502.jpg",
+      "source_title": "Minotaur / Minotaur Thin Metal Cutting Discs 115 x 1 x 22.23mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/diamond-blade-segmented.jpg",
+      "source_page": "https://www.toolstation.com/power-tool-accessories/cutting-blades/c715",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/87878.jpg",
+      "source_title": "Abracs / Abracs Tile & Porcelain Diamond Blade 115 x 22mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/brick-trowel.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/building-tools/c667",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/96074.jpg",
+      "source_title": "Marshalltown / Marshalltown Brick Trowel 11\"",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/notched-trowel.jpg",
+      "source_page": "https://www.toolstation.com/painting-decorating/tiling/c707",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/86160.jpg",
+      "source_title": "Vitrex / Vitrex Professional Notched Trowel Floor 10mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/builders-bucket.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/buckets/c1252",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/61829.jpg",
+      "source_title": "Yellow Builders Bucket 13.5L",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/cold-chisel.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/bolsters-wrecking-bars/c417",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/90278.jpg",
+      "source_title": "Roughneck / Roughneck Cold Chisel With Grip 18\"",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/dulux-white-paint.jpg",
+      "source_page": "https://www.toolstation.com/painting-decorating/paint/c705",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/94109.jpg",
+      "source_title": "Dulux Trade / Dulux Trade Vinyl Matt Emulsion Paint White 10L",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/paint-brush.jpg",
+      "source_page": "https://www.toolstation.com/painting-decorating/paint-brushes/c325",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/22131.jpg",
+      "source_title": "Hamilton For The Trade / Hamilton For The Trade Synthetic Paintbrush Set 3 Piece",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/paint-roller.jpg",
+      "source_page": "https://www.toolstation.com/painting-decorating/rollers-poles/c397",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/13243.jpg",
+      "source_title": "Hamilton For The Trade / Hamilton For The Trade 7 Piece Roller Set 9\"",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/wet-dry-sandpaper.jpg",
+      "source_page": "https://www.toolstation.com/painting-decorating/sanding-paper/c95",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/51476.jpg",
+      "source_title": "Wet & Dry Sanding Sheets 230 x 280mm 600 Grit",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/brass-ball-valve.jpg",
+      "source_page": "https://www.toolstation.com/plumbing/valves/c913",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/57154.jpg",
+      "source_title": "Flume / Flume Lever Ball Valve 15mm Blue",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/plastic-elbow-pipe.jpg",
+      "source_page": "https://www.toolstation.com/plumbing/push-fit-fittings/c968",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/78914.jpg",
+      "source_title": "JG Speedfit / JG Speedfit Elbow Connector 15mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/brass-stopcock.jpg",
+      "source_page": "https://www.toolstation.com/plumbing/brassware-valves-taps/c183",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/55154.jpg",
+      "source_title": "Pegler Yorkshire / Pegler Brass Stopcock 15mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/flexible-tap-connector.jpg",
+      "source_page": "https://www.toolstation.com/plumbing/flexible-tap-connectors/c983",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/77655.jpg",
+      "source_title": "Flexible Tap Connector with Isolating Valve 15mm x 1/2\" 10mm Bore. 300mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/electrical-cable.jpg",
+      "source_page": "https://www.toolstation.com/electrical-supplies-accessories/cables-flexes/c1118",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/22312.jpg",
+      "source_title": "Pitacs / Pitacs Twin & Earth Cable (6242Y) Grey 1.5mm2 Drum",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/schneider-circuit-breaker.jpg",
+      "source_page": "https://www.toolstation.com/electrical-supplies-accessories/mcbs/c938",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/19102.jpg",
+      "source_title": "BG / BG MCB 16A SP Type B",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/electrical-insulation-tape.jpg",
+      "source_page": "https://www.toolstation.com/adhesives-sealants/tapes/c123",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AE667.jpg",
+      "source_title": "Termination Technology / Insulation Tape Black 19mm x 33m",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/flexible-conduit.jpg",
+      "source_page": "https://www.toolstation.com/electrical-supplies-accessories/cable-management/c207",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AE841.jpg",
+      "source_title": "D-Line / D-Line Flexible Conduit 10m 25mm Black",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/philips-led-bulb.jpg",
+      "source_page": "https://www.toolstation.com/lighting/gls-bulb/c1414",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AB276.jpg",
+      "source_title": "Wessex Electrical / Wessex LED A60 GLS Dimmable Bulbs 5.9W ES Warm White 806lm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/led-floodlight.jpg",
+      "source_page": "https://www.toolstation.com/lighting/outside-lights/c697",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/58462.jpg",
+      "source_title": "Wessex Electrical / Wessex LED PIR Floodlight IP65 30W 3600lm 4000K Black",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/round-led-downlight.jpg",
+      "source_page": "https://www.toolstation.com/lighting/downlights/c698",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AA853.jpg",
+      "source_title": "Wessex Electrical / Wessex LED Integrated Dimmable Fire Rated Push-Fit Downlight IP65 6W 630lm 3CCT 10 Pack",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/led-strip-light.jpg",
+      "source_page": "https://www.toolstation.com/lighting/led-strip-lights/c1083",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/14086.jpg",
+      "source_title": "Sensio / Sensio Primo IP20 Flexible LED Strip Light 24V 3000K 405Lm/M",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/wood-screws.jpg",
+      "source_page": "https://www.toolstation.com/screws-fixings/screws/c728",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/21467.jpg",
+      "source_title": "FandF / F&F Single Thread Countersunk Wood Screws 5.0 x 60mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/fischer-wall-plugs.jpg",
+      "source_page": "https://www.toolstation.com/screws-fixings/fixings-fasteners/c730",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/43414.jpg",
+      "source_title": "Fischer / Fischer Plastic Contract Wall Plug 5, 6 & 7mm 200 Pack",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/hex-bolt-nuts.jpg",
+      "source_page": "https://www.toolstation.com/screws-fixings/nuts-bolts-washers/c727?brand=FandF&colour=Silver&thread=M6",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/88418.jpg",
+      "source_title": "F&F High Tensile Set Screw M6 x 60",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/round-wire-nails.jpg",
+      "source_page": "https://www.toolstation.com/screws-fixings/nails-staples/c729",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/84935.jpg",
+      "source_title": "FandF / F&F Round Wire Nail Pack 50mm 220 Pack",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/sika-silicone-sealant.jpg",
+      "source_page": "https://www.toolstation.com/adhesives-sealants/sealants/c658",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/50988.jpg",
+      "source_title": "Dow / Dowsil DC785+ Sanitary Silicone Sealant 310ml White",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/grab-adhesive.jpg",
+      "source_page": "https://www.toolstation.com/adhesives-sealants/adhesives/c657",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/54567.jpg",
+      "source_title": "Sika / Sika Instant Nails Solvent Free Grab Adhesive 290ml White",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/masking-tape.jpg",
+      "source_page": "https://www.toolstation.com/painting-decorating/masking-tape/c485",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/67832.jpg",
+      "source_title": "Pinnacle / Pinnacle Masking Tape 48mm x 50m",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/wood-glue.jpg",
+      "source_page": "https://www.toolstation.com/adhesives-sealants/adhesives/c657",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/78519.jpg",
+      "source_title": "Everbuild / 5 Minute Polyurethane Wood Glue Gel 310ml",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/nitrile-work-gloves.jpg",
+      "source_page": "https://www.toolstation.com/workwear-safety/ppe/c735",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/44976.jpg",
+      "source_title": "MCR Safety / MCR Olba General Purpose Nitrile Foam Gloves Large",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/safety-glasses.jpg",
+      "source_page": "https://www.toolstation.com/workwear-safety/ppe/c735",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/48827.jpg",
+      "source_title": "JSP / JSP Stealth Safety Glasses Clear",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/safety-helmet.jpg",
+      "source_page": "https://www.toolstation.com/workwear-safety/ppe/c735",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/50210.jpg",
+      "source_title": "JSP / JSP EVO2 Adjustable Safety Helmet White",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/hi-vis-vest.jpg",
+      "source_page": "https://www.toolstation.com/hi-vis-waistcoat/p66248",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/66248.jpg",
+      "source_title": "Hi Vis Waistcoat Yellow Medium",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/garden-hose.jpg",
+      "source_page": "https://www.toolstation.com/landscaping/watering/c691",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/62595.jpg",
+      "source_title": "Green Garden Hose 1/2\" x 30m",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/bypass-secateurs.jpg",
+      "source_page": "https://www.toolstation.com/landscaping/garden-hand-tools/c688",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/65472.jpg",
+      "source_title": "Hawksmoor / Hawksmoor Bypass Secateurs 8\"",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/garden-shovel.jpg",
+      "source_page": "https://www.toolstation.com/landscaping/garden-hand-tools/c688",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/41607.jpg",
+      "source_title": "Hawksmoor / Hawksmoor Long Handle Round Shovel 220mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/garden-rake.jpg",
+      "source_page": "https://www.toolstation.com/landscaping/garden-hand-tools/c688",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/89649.jpg",
+      "source_title": "Hawksmoor / Hawksmoor Carbon Steel Rake 350mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/yale-brass-padlock.jpg",
+      "source_page": "https://www.toolstation.com/security/padlocks/c130",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/24077.jpg",
+      "source_title": "Squire / Squire Watchman Brass Padlock 40 x 6 x 42mm LS",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/steel-butt-hinge.jpg",
+      "source_page": "https://www.toolstation.com/ironmongery/hinges/c683",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/23411.jpg",
+      "source_title": "Perry / Stainless Steel Butt Hinge 75mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/barrel-bolt.jpg",
+      "source_page": "https://www.toolstation.com/security/padlock-bolts-hasps/c382",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AE249.jpg",
+      "source_title": "Lockworks / Lockworks Heavy Duty Brenton Bolt Galvanised 200mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/cabinet-handle.jpg",
+      "source_page": "https://www.toolstation.com/ironmongery/cabinet-wardrobe-hardware/c679",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/AE291.jpg",
+      "source_title": "Eclipse / Eclipse Knurled T Bar Cabinet Handle Satin Brass 160mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/stiff-broom.jpg",
+      "source_page": "https://www.toolstation.com/cleaning-pest-control/brushes-brooms/c470",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/22516.jpg",
+      "source_title": "Hill Brush Company / Industrial Stiff Platform Broom With Handle 18\" (457mm) PVC",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/microfibre-cloth.jpg",
+      "source_page": "https://www.toolstation.com/cleaning-pest-control/wipes-cloths-rolls/c456",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/85206.jpg",
+      "source_title": "Microfibre Cloths 400 x 400mm 10 Pk",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/wire-brush.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/engineering-tools/c673?type=Wire+Brush",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/29481.jpg",
+      "source_title": "Tried and Tested / Wire Brush 4 Row",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/rubble-sack.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/tarpaulin-sheeting-waste-bags/c49",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/46871.jpg",
+      "source_title": "Woven Rubble Sack 900mm x 600mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/stanley-tool-box.jpg",
+      "source_page": "https://www.toolstation.com/ladders-storage/tool-storage/c687",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/56341.jpg",
+      "source_title": "Stanley FatMax / Stanley FatMax Pro Cantilever Toolbox 26\"",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/stanley-parts-organiser.jpg",
+      "source_page": "https://www.toolstation.com/ladders-storage/tool-storage/c687",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/61877.jpg",
+      "source_title": "Stanley FatMax / Stanley FatMax Pro-Stack Organiser Twin Pack 440 x 119 x 332mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/tool-bag.jpg",
+      "source_page": "https://www.toolstation.com/ladders-storage/tool-storage/c687",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/47893.jpg",
+      "source_title": "Stanley FatMax / Stanley FatMax Tool Bag 18\"",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/aluminium-step-ladder.jpg",
+      "source_page": "https://www.toolstation.com/ladders-storage/step-ladders/c323",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/17693.jpg",
+      "source_title": "Lyte Ladders / Lyte MagnaStep Platform Aluminium Step Ladder With Safety Handrail, 8 Tread, Closed Length 2.975m",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/stanley-tape-measure.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/tape-measures/c34",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/34472.jpg",
+      "source_title": "Stanley / Stanley Tylon Tape Measures 5m & 8m",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/stanley-spirit-level.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/spirit-levels/c29",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/53345.jpg",
+      "source_title": "Minotaur / Minotaur Spirit Level Set",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/carpenters-square.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/woodworking-tools/c668",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/62253.jpg",
+      "source_title": "OX / OX Pro Carpenters Square & Angle Finder 300mm (12\")",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    },
+    {
+      "file": "/images/steel-ruler.jpg",
+      "source_page": "https://www.toolstation.com/hand-tools/engineering-tools/c673?type=Ruler",
+      "source_url": "https://cdn.aws.toolstation.com/images/141020-UK/800/38506.jpg",
+      "source_title": "Precision / Stainless Steel Ruler 150mm",
+      "usage": "Fotografía ilustrativa del tipo de producto. Las variantes, marcas, precios e inventario son datos de demostración."
+    }
+  ],
+  "failed": []
+}
