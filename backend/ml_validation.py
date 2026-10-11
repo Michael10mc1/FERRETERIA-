@@ -11,9 +11,55 @@ from sqlalchemy.orm import Session
 
 from .auth import admin
 from .database import get_db
-from .models import DailySale, ForecastObservation, Order, Product
+from .models import DailySale, ForecastObservation, Order, Product, Setting, Movement
 from .services import lock
-from .ml import router, today, real_history, unavailable_reason, forecast, report
+from .ml import router, today, real_history, unavailable_reason, forecast, report, features, FEATURES, load_model, local_date
+
+def historical_backtest(db, metadata):
+    """Retrospective evaluation on the independently generated project history.
+
+    These results are never inserted as predictions saved before the outcome.
+    Prices/promotions are fixed during the generated period and stored explicitly.
+    """
+    import pandas as pd
+    from threadpoolctl import threadpool_limits
+    end=date.fromisoformat(metadata['through'])
+    inputs=[];pairs=[];excluded=0
+    movements={}
+    for m in db.scalars(select(Movement).order_by(Movement.created_at,Movement.id)):
+        movements.setdefault(m.product_id,[]).append((local_date(m.created_at),m.balance))
+    for n in range(7):
+        outcome_end=end-timedelta(days=7*n)
+        cutoff=outcome_end-timedelta(days=7)
+        outcomes={p['id']:p for p in real_history(db,outcome_end)}
+        for p in real_history(db,cutoff):
+            week=[h for h in outcomes[p['id']]['history'] if cutoff.isoformat()<h['date']<=outcome_end.isoformat()]
+            if unavailable_reason(p) or len(week)!=7 or any(not h['available'] or h['pending'] for h in week):
+                excluded+=1;continue
+            known=metadata['historical_products'][str(p['id'])]
+            inputs.append(features(known,p['history'],cutoff))
+            balances=[b for d,b in movements.get(p['id'],[]) if d<=cutoff]
+            pairs.append({'id':len(pairs)+1,'sku':p['sku'],'name':p['name'],
+                'start':(cutoff+timedelta(days=1)).isoformat(),'end':outcome_end.isoformat(),
+                'actual':sum(h['units'] for h in week),'baseline':sum(h['units'] for h in p['history'][-7:]),
+                'stock_at_cutoff':balances[-1] if balances else 0,'status':'evaluada','reason':None})
+    if not pairs: return None
+    bundle=load_model()
+    with threadpool_limits(limits=2):
+        predictions=bundle['modelo'].predict(pd.DataFrame(inputs,columns=FEATURES))
+    confusion=[[0,0],[0,0]]
+    for p,pred in zip(pairs,predictions):
+        p['prediction']=float(pred)
+        risk=int(p['actual']>p['stock_at_cutoff'])
+        alert=int(p['prediction']*bundle['factor']>p['stock_at_cutoff'])
+        confusion[risk][alert]+=1
+    tn,fp=confusion[0];fn,tp=confusion[1]
+    return {'evaluation_kind':'RETROSPECTIVA','as_of':end.isoformat(),'evaluated':len(pairs),'excluded':excluded,
+        'products':len({p['sku'] for p in pairs}),'periods':len({p['start'] for p in pairs}),
+        'model_metrics':metrics(pairs,'prediction'),'baseline_metrics':metrics(pairs,'baseline'),
+        'confusion':confusion,'recall':tp/(tp+fn) if tp+fn else None,
+        'precision':tp/(tp+fp) if tp+fp else None,
+        'items':pairs[:20], 'model_hash':report()['artifact_sha256']}
 
 
 def diagnostics(db):
@@ -70,7 +116,7 @@ def save_snapshots(db:Session=Depends(get_db),user=Depends(admin)):
         db.add(ForecastObservation(product_id=pid,start=result['forecast_start'],end=result['forecast_end'],
             model_hash=report()['artifact_sha256'],prediction=p['prediction'],baseline=p['previous_7'],
             context={'sku':p['sku'],'name':p['name'],'history':p['history'],'stock':p['stock'],
-                     'trained_on':'SINTETICO','as_of':result['as_of']},user_id=uid))
+                     'trained_on':'SINTETICO','history_origin':result['history_origin'],'as_of':result['as_of']},user_id=uid))
         saved+=1
     db.commit()
     return {'saved':saved,'already_tracking':len(eligible)-saved,'available_from':(date.fromisoformat(result['forecast_end'])+timedelta(days=1)).isoformat()}
@@ -117,4 +163,7 @@ def validation_results(db):
 
 @router.get('/validation')
 def get_validation(db:Session=Depends(get_db)):
-    return validation_results(db)
+    data=validation_results(db)
+    stored=db.get(Setting,'presentation_evaluation')
+    data['historical']=stored.value if stored and stored.value.get('model_hash')==report()['artifact_sha256'] else None
+    return data

@@ -5,7 +5,8 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 DATA = Path(__file__).resolve().parent / 'data'
 DATA.mkdir(exist_ok=True)
-engine = create_engine(os.getenv('DATABASE_URL', f'sqlite:///{DATA / "horizonte.db"}'), connect_args={'check_same_thread': False, 'timeout': 30})
+DEFAULT_DATABASE = DATA / ('presentacion.db' if (DATA/'presentacion.activa').exists() else 'horizonte.db')
+engine = create_engine(os.getenv('DATABASE_URL', f'sqlite:///{DEFAULT_DATABASE}'), connect_args={'check_same_thread': False, 'timeout': 30})
 @event.listens_for(engine, 'connect')
 def configure(connection, _):
     connection.execute('PRAGMA foreign_keys=ON')

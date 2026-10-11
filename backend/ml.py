@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from .auth import admin
 from .database import get_db
-from .models import DailySale, Movement, Order, OrderItem, Product
+from .models import DailySale, Movement, Order, OrderItem, Product, Setting
 from .services import lock
 
 router = APIRouter(prefix='/api/admin/ml', dependencies=[Depends(admin)])
@@ -69,7 +69,7 @@ def real_history(db, cutoff, product_ids=None):
     products = list(db.scalars(select(Product).where(Product.active == True if product_ids is None else Product.id.in_(product_ids))))
     movements = {}
     for m in db.scalars(select(Movement).order_by(Movement.created_at, Movement.id)):
-        movements.setdefault(m.product_id, []).append(m)
+        movements.setdefault(m.product_id, []).append((local_date(m.created_at),m))
     imported = {(x.product_id,x.day):x for x in db.scalars(select(DailySale).where(
         DailySale.day >= start.isoformat(), DailySale.day <= cutoff.isoformat()))}
     sold, committed_today, pending = {}, {}, set()
@@ -85,7 +85,7 @@ def real_history(db, cutoff, product_ids=None):
     output = []
     for p in products:
         pm = movements.get(p.id,[])
-        opening = min((local_date(m.created_at) for m in pm if m.kind == 'apertura'), default=None)
+        opening = min((d for d,m in pm if m.kind == 'apertura'), default=None)
         h, limited = [], 0
         for day in days:
             imported_day = imported.get((p.id,day.isoformat()))
@@ -93,8 +93,8 @@ def real_history(db, cutoff, product_ids=None):
                 h.append({'date':day.isoformat(),'units':imported_day.units,'available':imported_day.available,'pending':False})
                 limited += int(not imported_day.available)
             elif opening and day > opening:
-                before = [m for m in pm if local_date(m.created_at) < day]
-                during = [m for m in pm if local_date(m.created_at) == day]
+                before = [m for d,m in pm if d < day]
+                during = [m for d,m in pm if d == day]
                 unavailable = (bool(before) and before[-1].balance <= 0) or any(m.balance <= 0 for m in during)
                 limited += int(unavailable)
                 h.append({'date':day.isoformat(),'units':sold.get((p.id,day.isoformat()),0),
@@ -154,7 +154,8 @@ def forecast(db, mode='tienda'):
             raise HTTPException(503,'No se pudo cargar el modelo compatible. Revisa las dependencias y el paquete ML.') from exc
     order = {'urgente':0,'preventiva':1,'cubierto':2,'sin_historial':3}
     rows.sort(key=lambda r:(order[r['action']],-(r['suggested'] or 0),r['name']))
-    return {'mode':mode,'as_of':cutoff.isoformat(),'forecast_start':(cutoff+timedelta(days=1)).isoformat(),
+    origin='DATOS_CUADERNO' if mode=='ejemplo' else 'DATOS_DE_DEMOSTRACION' if db.get(Setting,'presentation') else 'REGISTROS_TIENDA'
+    return {'mode':mode,'history_origin':origin,'as_of':cutoff.isoformat(),'forecast_start':(cutoff+timedelta(days=1)).isoformat(),
         'forecast_end':(cutoff+timedelta(days=7)).isoformat(),'generated_at':datetime.now(PERU).isoformat(),
         'trained_on':'SINTETICO','items':rows,'summary':{'products':len(rows),'ready':len(ready),
         'urgent':sum(r['action']=='urgente' for r in rows),'preventive':sum(r['action']=='preventiva' for r in rows),
@@ -165,9 +166,11 @@ def get_forecast(mode:str='tienda',db:Session=Depends(get_db)):
     return forecast(db,mode)
 
 @router.get('/model')
-def get_model():
+def get_model(db:Session=Depends(get_db)):
     data = dict(report())
     data.pop('artifact_sha256',None)
+    source=db.get(Setting,'presentation')
+    data['project_data']={k:source.value[k] for k in ('methodology','days','from','through','delivered_orders')} if source else None
     return data
 
 @router.get('/export')
@@ -178,7 +181,7 @@ def export(mode:str='tienda',db:Session=Depends(get_db)):
     writer.writerow(['sku','producto','origen_historial','modelo_entrenado_con','desde','hasta','stock','ventas_previstas_7d','comprometidas_hoy','prevision_restante','reponer','costo_estimado_soles','decision','observacion'])
     labels = {'urgente':'Reponer urgente','preventiva':'Reposición preventiva','cubierto':'Stock cubierto','sin_historial':'Sin pronóstico'}
     for p in data['items']:
-        values = [p['sku'],p['name'],mode,'SINTETICO',data['forecast_start'],data['forecast_end'],p['stock'],
+        values = [p['sku'],p['name'],data['history_origin'],'SINTETICO',data['forecast_start'],data['forecast_end'],p['stock'],
                   p['prediction'],p['committed_today'],p['remaining_prediction'],p['suggested'],None if p['purchase_cents'] is None else p['purchase_cents']/100,labels[p['action']],p['reason']]
         writer.writerow(["'"+v if isinstance(v,str) and v.startswith(('=','+','-','@','\t','\r')) else v for v in values])
     return Response(stream.getvalue(),media_type='text/csv; charset=utf-8',headers={'Content-Disposition':f'attachment; filename="prevision-{mode}.csv"'})

@@ -89,3 +89,35 @@ ventas faltantes con datos sintéticos y no reentrena automáticamente. Se requi
 registrar todas las ventas del negocio para interpretar correctamente los ceros.
 La matriz del cuaderno sigue siendo sintética; el seguimiento real evalúa ventas,
 sin presentar los reabastecimientos como una matriz real de faltantes.
+
+## Presentación académica
+
+Ejecuta `preparar-presentacion.cmd` después de crear el administrador y reinicia
+la web con `iniciar.cmd`. Se crea `backend/data/presentacion.db` como copia de
+la tienda original y se activa mediante `backend/data/presentacion.activa`.
+La base original `horizonte.db` se conserva. Las cuentas existentes funcionan
+en la copia. Ninguna base, sesión ni credencial se incluye en GitHub.
+
+La preparación añade 84 días de datos de demostración: pedidos, líneas de venta,
+clientes sin datos de contacto reales, entradas de proveedor y devoluciones.
+Los importes se calculan con el catálogo en PEN. Cada movimiento conserva su
+balance, las cancelaciones restituyen stock y solo los pedidos entregados cuentan
+como ventas. La semilla 20261011 permite repetir la generación; volver a ejecutar
+la preparación conserva la presentación existente sin duplicar pedidos.
+
+La procedencia se explica en **Predicciones ML → Modelo y metodología**. Son
+datos creados para probar el proyecto, no transacciones de una empresa real.
+El historial operativo es independiente de los 116,800 registros de entrenamiento.
+En **Historial y evaluación** se muestra una evaluación retrospectiva de siete
+semanas, con las mismas variables de 28 días, referencia semanal, métricas y matriz
+de cobertura de stock al corte. Los precios/promociones históricos son constantes
+y se conservan como metadatos. Las recepciones posteriores no se incluyen en la
+comparación de cobertura. El informe corresponde al historial cerrado hasta la
+fecha indicada; nuevas previsiones se guardan mediante el seguimiento prospectivo.
+
+Para volver a la base original, cambia el nombre de `presentacion.activa` a
+`presentacion.inactiva` y reinicia el servidor. Para regresar a la presentación,
+restaura el nombre `presentacion.activa`. También se puede seleccionar otra base
+mediante `DATABASE_URL`, que siempre tiene prioridad.
+
+Verificación de presentación: `.venv\Scripts\python.exe -m pytest backend/test_presentation.py -q`.
