@@ -142,3 +142,27 @@ class AIMessage(Base):
     content: Mapped[str]
     evidence: Mapped[dict] = mapped_column(JSON, default=dict)
     created_at: Mapped[str] = mapped_column(default=now)
+
+class AgentRun(Base):
+    __tablename__ = 'agent_runs'
+    __table_args__ = (UniqueConstraint('user_id', 'request_id'),)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
+    scope: Mapped[str]
+    request_id: Mapped[str]
+    question: Mapped[str]
+    budget_cents: Mapped[int | None] = mapped_column(nullable=True)
+    status: Mapped[str] = mapped_column(default='queued', index=True)
+    created_at: Mapped[str] = mapped_column(default=now)
+    updated_at: Mapped[str] = mapped_column(default=now)
+    result: Mapped[dict] = mapped_column(JSON, default=dict)
+
+class AgentCall(Base):
+    __tablename__ = 'agent_calls'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey('agent_runs.id'), index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
+    created_at: Mapped[str] = mapped_column(default=now, index=True)
+    agent: Mapped[str]
+    status: Mapped[str] = mapped_column(default='started')
+    usage: Mapped[dict] = mapped_column(JSON, default=dict)

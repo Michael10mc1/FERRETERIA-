@@ -166,3 +166,66 @@ Verificación sin consumir saldo:
 `.venv\Scripts\python.exe -m pytest backend/test_assistant.py backend/test_app.py backend/test_ml.py -q`.
 Las pruebas usan una base temporal y respuestas controladas del proveedor; comprueban
 permisos, aislamiento de historial, búsqueda, contexto ML, errores y que no cambie stock.
+
+## Equipo Horizonte · multiagentes
+
+Abre **Administración → Equipo de agentes** (`/admin/agentes`). Para clientes,
+`/agentes` está enlazado desde el asistente de la tienda. Usa la misma configuración
+Hive del `.env`; no requiere otra clave ni una suscripción adicional.
+
+El coordinador llama la función `delegar` del modelo para seleccionar especialistas.
+Cada especialista realiza llamadas independientes con instrucciones y herramientas
+permitidas, consulta datos de la aplicación y entrega una explicación con tarjetas
+calculadas por el servidor. Los resultados relevantes se comparten en orden:
+ventas → abastecimiento → pedidos. Es una coordinación acotada con herramientas
+nativas, no tres nombres para una sola respuesta ni una predicción nueva del LLM.
+
+| Especialista | Herramientas y resultado |
+| --- | --- |
+| Vendedor y cotizador | Busca el catálogo; cotiza productos consultados con cantidades, precios en céntimos y stock actuales. Permite editar cantidades y recalcular. El cliente puede añadirlos al carrito con una comprobación nueva de precio y stock. |
+| Abastecimiento (solo admin) | Consulta el ML existente de 7 días y reparte el presupuesto entre reposiciones urgentes y luego preventivas, por cantidad sugerida y SKU. Descarga todas las líneas en CSV. No optimiza rentabilidad ni inventa proveedores o plazos. |
+| Pedidos | Consulta estados, pago y siguiente paso. Clientes: solo pedidos propios. Administrador: pedidos de la tienda. No transmite nombres, teléfonos, direcciones ni notas al proveedor. |
+
+El **campo Presupuesto** aplica el tope en cada propuesta, no un fondo compartido
+entre venta y compra de inventario. En blanco significa sin tope; cero es un tope
+válido. Una cantidad editada requiere recalcular. La cotización muestra mercadería
+para recojo y el envío aparte; una propuesta que supera el presupuesto queda
+señalada. El abastecimiento usa costos registrados, sin fletes de proveedores;
+los costos cero quedan pendientes de revisión. Las tarjetas son capturas fechadas.
+Ninguna herramienta escribe pedidos, pagos o movimientos de inventario.
+
+El **radar** consulta stock mínimo y pedidos pendientes al abrir o actualizar el
+centro. Usa reglas, sin llamadas de IA. No hay cron, correo ni ejecución programada
+con el servidor apagado. La procedencia de los datos sigue en la metodología del ML.
+
+### Ejemplo para presentar el proyecto
+
+1. Pulsa **Reunir a todo el equipo** y ajusta el presupuesto.
+2. Describe: “Cotiza una unidad de un taladro; prepara la reposición semanal y
+   revisa pedidos activos”. Pulsa **Poner al equipo a trabajar**.
+3. Sigue las etapas y revisa la cotización, el plan ML y los pedidos.
+4. Abre **Cómo trabajó tu equipo** para ver herramientas, pasos y tokens reportados.
+   Los pasos son eventos de ejecución; no muestran razonamiento interno del modelo.
+
+### Ejecución y límites
+
+`backend/agents.py` guarda trabajos en `agent_runs` y cada intento de llamada en
+`agent_calls`. Los contadores persisten después de reiniciar: 12 llamadas por
+trabajo, 120 por usuario/24 h, 400 globales/24 h y 30 trabajos por usuario/24 h.
+Máximo un trabajo activo por cuenta y dos globales. El límite se reserva antes de
+llamar a Hive; los errores también cuentan. Los límites del chat individual son
+independientes. No se estima el saldo desde el número de llamadas.
+
+El servidor devuelve el identificador del trabajo y continúa en segundo plano;
+la página consulta su avance. Cada petición tiene una clave de idempotencia para
+evitar duplicar cobros al reenviarla. Los fallos conservan resultados parciales;
+los reinicios marcan trabajos pendientes como interrumpidos sin reanudarlos ni
+gastar nuevamente. Se acota el tiempo y el número de pasos. Ejecutar con **un
+proceso Uvicorn**: para varias instancias se necesita una cola con concesiones por
+trabajo y recuperación coordinada, antes de habilitar varios workers.
+
+Comprobar sin gastar saldo:
+`.venv\Scripts\python.exe -m pytest backend/test_agents.py backend/test_assistant.py backend/test_app.py backend/test_ml.py -q`.
+Incluye aislamiento por propietario/rol, herramientas prohibidas, presupuestos
+cero/limitados, cotizaciones y stock, idempotencia, fallos parciales, reinicios,
+cuotas persistentes y lectura de llamadas de herramienta fragmentadas en SSE.

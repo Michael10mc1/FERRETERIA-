@@ -35,6 +35,8 @@ def initialize():
 @asynccontextmanager
 async def lifespan(app):
     initialize()
+    from .agents import recover_interrupted
+    recover_interrupted()
     yield
 app = FastAPI(title='Ferretería Horizonte',lifespan=lifespan)
 
@@ -274,6 +276,8 @@ from . import ml_validation
 app.include_router(ml_router)
 from .assistant import router as assistant_router
 app.include_router(assistant_router)
+from .agents import router as agents_router
+app.include_router(agents_router)
 
 if (ROOT/'dist').exists():
     class SPA(StaticFiles):
