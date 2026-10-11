@@ -229,3 +229,64 @@ Comprobar sin gastar saldo:
 Incluye aislamiento por propietario/rol, herramientas prohibidas, presupuestos
 cero/limitados, cotizaciones y stock, idempotencia, fallos parciales, reinicios,
 cuotas persistentes y lectura de llamadas de herramienta fragmentadas en SSE.
+
+## Publicar la tarea: Render + Neon
+
+La aplicación completa (tienda, administración, modelo ML y agentes) se ejecuta
+en un servicio web Docker de Render; los registros se guardan en PostgreSQL de
+Neon. El modelo `.joblib` y las imágenes forman parte de la imagen de despliegue.
+No se usa el disco temporal de Render para guardar pedidos o usuarios.
+
+### Traslado inicial de los datos
+
+1. Guarda la **dirección PostgreSQL completa** del modal Connect de Neon en el
+   `.env` local como `NEON_DATABASE_URL`. Usa pooling y SSL. No publiques este
+   archivo ni la contraseña en GitHub.
+2. Revisa sin importar: `.venv\Scripts\python.exe -m backend.migrate_neon`.
+3. Importa una sola vez: `.venv\Scripts\python.exe -m backend.migrate_neon --apply`.
+
+La migración hace un respaldo consistente de la SQLite activa, conserva IDs,
+contraseñas cifradas y registros del negocio, y compara cada tabla importada por
+conteo y huella SHA-256 antes de confirmar la transacción. Actualiza las secuencias
+para que nuevos registros no repitan IDs. Las sesiones de inicio de sesión local
+no se importan: inicia sesión nuevamente en la web publicada. Si el destino tiene
+registros, se detiene y no los sobrescribe. El respaldo y el informe quedan en
+`backend/data/`, fuera de Git y Docker. El origen de los datos del proyecto sigue
+registrado en la metodología; trasladarlos no cambia su procedencia.
+
+`NEON_DATABASE_URL` sirve para el traslado. `DATABASE_URL` selecciona la base
+activa de la aplicación. Sin esta última, la página local conserva SQLite.
+
+### Publicación
+
+1. En Render, conecta el repositorio `Michael10mc1/FERRETERIA-` y selecciona la
+   rama con estos cambios (`codex/colab`). Crea un Blueprint con `render.yaml`
+   o un Web Service Docker con el plan **Free**, región Ohio y una instancia.
+2. Configura como variables privadas del servicio `DATABASE_URL` (la dirección
+   completa de Neon) y `HIVE_API_KEY` (la clave existente). El Blueprint incluye
+   la URL/modelo Hive y `COOKIE_SECURE=1` para HTTPS.
+3. Publica y comprueba `/api/health`, el catálogo, ambos roles, ML y agentes.
+   El comprobador de salud también revisa la conexión de base de datos.
+
+El Dockerfile usa Python 3.12 y las versiones compatibles con el modelo entrenado.
+El proceso corre como usuario sin privilegios, con un solo worker y límites de
+hilos para las bibliotecas numéricas. El `.env` y las bases locales se excluyen de la imagen. Las
+operaciones de inventario y las cuotas de agentes usan un bloqueo PostgreSQL por
+transacción, compatible con el pooler de Neon.
+
+Render Free puede suspender el servicio cuando está inactivo; abrirlo antes de la
+presentación reduce la espera inicial. Las llamadas de Hive consumen su saldo
+independientemente del alojamiento gratuito. Si Render interrumpe un trabajo de
+agentes, se conserva su historial y queda marcado como interrumpido al reiniciar.
+No se reanuda automáticamente ni vuelve a gastar llamadas.
+
+### Verificación antes de publicar
+
+`docker build -t horizonte-deploy-check .` comprueba la compilación completa en
+Linux. Las pruebas locales habituales siguen usando bases SQLite separadas.
+Para probar también PostgreSQL, configura `RUN_NEON_TESTS=1` y ejecuta
+`.venv\Scripts\python.exe -m pytest backend/test_postgresql.py -q`.
+Estas pruebas crean y eliminan únicamente esquemas temporales con nombres
+aleatorios; no utilizan las tablas de la tienda. Incluyen importación, secuencias,
+pedidos, concurrencia por la última unidad, ML y agentes con proveedor simulado
+para evitar consumo de saldo durante la verificación.

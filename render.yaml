@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ferreteria-horizonte
+    runtime: docker
+    plan: free
+    region: ohio
+    numInstances: 1
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: HIVE_API_KEY
+        sync: false
+      - key: HIVE_BASE_URL
+        value: https://api-cdn.thehive.ai/api/v3
+      - key: HIVE_MODEL
+        value: deepseek-ai/deepseek-v4.1-flash
+      - key: COOKIE_SECURE
+        value: "1"

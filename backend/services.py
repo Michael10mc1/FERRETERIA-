@@ -18,7 +18,11 @@ def lock(db):
     # Authentication may have opened a read transaction. Acquire a write lock
     # before reading stock/state so concurrent requests serialize safely.
     db.rollback()
-    db.execute(text('BEGIN IMMEDIATE'))
+    if db.get_bind().dialect.name == 'postgresql':
+        # Transaction-scoped serialization also works through Neon's pooler.
+        db.execute(text('SELECT pg_advisory_xact_lock(:key)'), {'key': 731948571})
+    else:
+        db.execute(text('BEGIN IMMEDIATE'))
 def order_json(db, order):
     data = row(order)
     data.pop('request_hash')

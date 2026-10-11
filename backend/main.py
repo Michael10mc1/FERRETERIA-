@@ -5,8 +5,8 @@ from datetime import date
 from fastapi import FastAPI, Depends, HTTPException, Request, Response, Query
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy import select, func, or_, delete
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy import select, func, or_, delete, text
+from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session as DBSession
 from .database import Base, engine, get_db, SessionLocal
 from .models import User, Session, Product, Taxonomy, Order, OrderEvent, Movement, Setting
@@ -60,6 +60,10 @@ async def security(request: Request, call_next):
 async def integrity_error(request, exc):
     return JSONResponse({'detail':'El registro ya existe o los datos no son válidos'},status_code=409)
 
+@app.exception_handler(OperationalError)
+async def database_unavailable(request, exc):
+    return JSONResponse({'detail':'La base de datos no está disponible. Inténtalo nuevamente.'},status_code=503)
+
 attempts = {}
 def throttle(request):
     ip = request.client.host if request.client else 'local'
@@ -68,7 +72,9 @@ def throttle(request):
     attempts[ip] = ticks+[time.time()]
 
 @app.get('/api/health')
-def health(): return {'status':'ok'}
+def health(db: DBSession=Depends(get_db)):
+    db.execute(text('SELECT 1'))
+    return {'status':'ok'}
 @app.get('/api/store')
 def store(db: DBSession=Depends(get_db)): return db.get(Setting,'store').value
 @app.put('/api/admin/store')

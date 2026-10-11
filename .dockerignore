@@ -1,0 +1,17 @@
+.git
+.env
+.env.*
+.venv*
+node_modules
+dist
+backend/data
+backend/test_*.py
+entrenamiento
+verificacion
+__pycache__
+**/__pycache__
+.pytest_cache
+*.log
+*.db*
+*.tsbuildinfo
+attachments
