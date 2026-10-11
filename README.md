@@ -121,3 +121,48 @@ restaura el nombre `presentacion.activa`. También se puede seleccionar otra bas
 mediante `DATABASE_URL`, que siempre tiene prioridad.
 
 Verificación de presentación: `.venv\Scripts\python.exe -m pytest backend/test_presentation.py -q`.
+
+
+## Horizonte IA: asistente con contexto de la tienda
+
+El administrador dispone de **Administración → Asistente IA** (`/admin/asistente`).
+El cliente entra desde el botón **¿Te ayudo con tu proyecto?** (`/asistente`) e inicia
+sesión para conversar. El historial es privado por cuenta y por rol.
+
+Copia `.env.example` a `.env` si aún no existe y completa `HIVE_API_KEY` con la clave
+secreta V3. No sobrescribas tu `.env` existente. El servidor lee las tres variables
+HIVE de ese archivo; las variables del proceso tienen prioridad. La URL por defecto
+es `https://api-cdn.thehive.ai/api/v3` y el modelo
+`deepseek-ai/deepseek-v4.1-flash`. Solo se admiten los hosts oficiales de Hive;
+la clave nunca se envía al navegador ni se incluye en Git. No hace falta el ID
+público de la clave. Reinicia con `iniciar.cmd` después de actualizar el código.
+
+Referencia del proveedor: https://docs.thehive.ai/docs/deepseek-v41-flash
+
+El LLM ya está preentrenado. La integración recupera productos por relevancia,
+normaliza acentos y plurales y añade precios, stock y políticas actuales al contexto.
+Para administradores añade ventas agregadas de los últimos 30 días, inventario y
+previsiones calculadas por el ML existente. No se envían fichas de clientes,
+contraseñas, sesiones, direcciones de pedidos ni datos personales del administrador.
+El texto que el usuario escribe y los últimos diez mensajes de su conversación
+se envían a Hive para responder. No se envía la base completa.
+
+La respuesta incluye **Datos consultados**, una captura fechada de productos y
+previsiones con enlaces a las pantallas originales. Las conversaciones se guardan
+en la base activa, en `ai_conversations` y `ai_messages`. El chat es de consulta:
+no crea pedidos, cambia precios ni modifica existencias. El ML calcula la demanda;
+el LLM la explica, sin sustituirlo ni inventar otros horizontes de predicción.
+
+Hay un máximo de 1 consulta simultánea por cuenta, 6 por minuto, 60 por cuenta
+cada 24 horas y 300 globales cada 24 horas. Estos contadores residen en memoria
+para el servidor local de un proceso y se reinician al reiniciar el servidor.
+Antes de desplegar con varios procesos, hay que compartir los límites en una base
+o Redis. Se limita la entrada a 1800 caracteres y la salida a 1400 tokens;
+no se reintenta automáticamente una llamada de pago. Cada conversación admite
+30 consultas, tras las cuales se inicia otra. Los errores de saldo, autorización,
+límite o conexión se muestran sin incluir la respuesta privada del proveedor.
+
+Verificación sin consumir saldo:
+`.venv\Scripts\python.exe -m pytest backend/test_assistant.py backend/test_app.py backend/test_ml.py -q`.
+Las pruebas usan una base temporal y respuestas controladas del proveedor; comprueban
+permisos, aislamiento de historial, búsqueda, contexto ML, errores y que no cambie stock.

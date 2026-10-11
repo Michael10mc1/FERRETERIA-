@@ -125,3 +125,20 @@ class ForecastObservation(Base):
     context: Mapped[dict] = mapped_column(JSON)
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     created_at: Mapped[str] = mapped_column(default=now)
+
+class AIConversation(Base):
+    __tablename__ = 'ai_conversations'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
+    scope: Mapped[str]
+    title: Mapped[str]
+    created_at: Mapped[str] = mapped_column(default=now)
+
+class AIMessage(Base):
+    __tablename__ = 'ai_messages'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    conversation_id: Mapped[int] = mapped_column(ForeignKey('ai_conversations.id'), index=True)
+    role: Mapped[str]
+    content: Mapped[str]
+    evidence: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[str] = mapped_column(default=now)

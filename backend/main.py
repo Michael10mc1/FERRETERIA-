@@ -272,6 +272,8 @@ def export(kind:str,start:str='',end:str='',db:DBSession=Depends(get_db),user=De
 from .ml import router as ml_router
 from . import ml_validation
 app.include_router(ml_router)
+from .assistant import router as assistant_router
+app.include_router(assistant_router)
 
 if (ROOT/'dist').exists():
     class SPA(StaticFiles):
