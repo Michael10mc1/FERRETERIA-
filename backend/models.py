@@ -100,3 +100,14 @@ class Setting(Base):
     __tablename__ = 'settings'
     key: Mapped[str] = mapped_column(primary_key=True)
     value: Mapped[dict] = mapped_column(JSON)
+
+class DailySale(Base):
+    __tablename__ = 'ml_daily_sales'
+    __table_args__ = (UniqueConstraint('product_id','day'), CheckConstraint('units >= 0'))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey('products.id'), index=True)
+    day: Mapped[str] = mapped_column(index=True)
+    units: Mapped[int]
+    available: Mapped[bool] = mapped_column(default=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    created_at: Mapped[str] = mapped_column(default=now)

@@ -1,0 +1,82 @@
+{
+  "origen": "SINTETICO",
+  "semilla": 20261010,
+  "filas_dataset": 116800,
+  "productos": 320,
+  "dias": 365,
+  "horizonte": 7,
+  "parametros": {
+    "max_iter": 100,
+    "max_leaf_nodes": 15
+  },
+  "regresion_prueba": [
+    {
+      "modelo": "Referencia: ventas últimos 7 días",
+      "MAE_unidades": 7.543794642857143,
+      "RMSE_unidades": 10.2093685092244,
+      "WAPE_pct": 16.387975110752496,
+      "R2": 0.9094192221838103
+    },
+    {
+      "modelo": "HistGradientBoosting",
+      "MAE_unidades": 6.199570482754672,
+      "RMSE_unidades": 8.476315676813432,
+      "WAPE_pct": 13.467811834583548,
+      "R2": 0.9375614900463464
+    }
+  ],
+  "alertas_prueba": {
+    "factor_validado": 1.1,
+    "exactitud": 0.8981696428571428,
+    "precision": 0.8244348244348244,
+    "recall": 0.9494792820740084,
+    "F1": 0.8825498172081767,
+    "exactitud_balanceada": 0.9065102407080077,
+    "casos_sin_riesgo": 13374,
+    "casos_con_riesgo": 9026
+  },
+  "matriz_confusion": [
+    [
+      11549,
+      1825
+    ],
+    [
+      456,
+      8570
+    ]
+  ],
+  "particiones": [
+    {
+      "particion": "Entrenamiento",
+      "filas": 59520,
+      "desde": "2025-11-06",
+      "hasta": "2026-05-10"
+    },
+    {
+      "particion": "Validación",
+      "filas": 19520,
+      "desde": "2026-05-18",
+      "hasta": "2026-07-17"
+    },
+    {
+      "particion": "Prueba",
+      "filas": 22400,
+      "desde": "2026-07-25",
+      "hasta": "2026-10-02"
+    }
+  ],
+  "versiones": {
+    "python": "3.12.10",
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "sklearn": "1.6.1"
+  },
+  "supuestos": [
+    "Ventas sin restricciones de stock",
+    "Stock hipotético al cierre",
+    "Sin recepciones en los próximos 7 días",
+    "No constituye validación comercial"
+  ],
+  "artifact_sha256": "d2c869220c4e17cd59145e60ed29fe5b75b37b85c38bcd3d60ebb307a20e6d8f",
+  "procedencia": "Entrenamiento local verificado del cuaderno Colab V2"
+}
